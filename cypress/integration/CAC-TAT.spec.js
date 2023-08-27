@@ -21,8 +21,9 @@ describe('Central de Atendimento ao Cliente TAT', function () {
   });
 
   it('exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', () => {
-    cy.get('#email').clear();
-    cy.get('#email').type('alessandra');
+    cy.get('#email')
+      .clear()
+      .type('alessandra');
 
     cy.get('button[type="submit"]').click();
 
@@ -35,10 +36,44 @@ describe('Central de Atendimento ao Cliente TAT', function () {
       .should('have.value', '');
   });
 
-  it('', () => {
+  it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+    cy.get('#firstName').type('Alessandra');
+    cy.get('#lastName').type('Santos');
+    cy.get('#email').type('alessandra@hotmail.com');
+    cy.get('#phone-checkbox').click()
+    cy.get('#open-text-area').type('Lorem');
     
-  })
-  xit('', () => {})
+    cy.get('button[type="submit"]').click();
+
+    cy.get('.error').should('be.visible');
+  });
+
+  it.only('preenche e limpa os campos nome, sobrenome, email e telefone', () => {
+    cy.get('#firstName')
+      .type('Alessandra')
+      .should('have.value', 'Alessandra')
+      .clear()
+      .should('have.value', '')
+
+    cy.get('#lastName')
+      .type('Santos')
+      .should('have.value', 'Santos')
+      .clear()
+      .should('have.value', '')
+
+    cy.get('#email')
+      .type('alessandra@hotmail.com')
+      .should('have.value', 'alessandra@hotmail.com')
+      .clear()
+      .should('have.value', '')
+
+    cy.get('#phone')
+      .type('11959281234')
+      .should('have.value', '11959281234')
+      .clear()
+      .should('have.value', '')
+  });
+
   xit('', () => {})
   xit('', () => {})
   xit('', () => {})
